@@ -7,8 +7,8 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 // On Vercel (VERCEL=1 during their build) we emit the Vercel Build Output API
-// bundle; everywhere else the default Cloudflare target is kept.
-const nitroPreset = process.env["VERCEL"] ? "vercel" : undefined;
+// bundle; on Hostinger/Node.js use the node preset for a standalone server
+const nitroPreset = process.env["VERCEL"] ? "vercel" : "node";
 
 export default defineConfig({
   ...(nitroPreset ? { nitro: { preset: nitroPreset } } : {}),
