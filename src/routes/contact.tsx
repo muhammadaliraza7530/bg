@@ -1,89 +1,242 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { MapPin, Phone, Clock, MessageCircle } from "lucide-react";
-import { Reveal } from "@/components/site/Reveal";
-import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { Building2, Clock, Mail, MapPin, Phone, Send, UserRound } from "lucide-react";
+import { Reveal } from "@/components/Reveal";
+import { company, team } from "@/data/company";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact Shazib Outlet — Gujrat, Punjab" },
+      { title: "Contact B·G Pharma Pakistan — Faisalabad Head Office" },
       {
         name: "description",
         content:
-          "Visit Shazib Outlet at Chhani Nikowani, District Gujrat, or call 0314 484 9045 to order watches, wallets and power banks.",
+          "Contact B·G Pharma Pakistan: 0319-6542988, bgpharmapakistan@gmail.com, H #49-B Near Jamia Rizvia Ghosia, Sheikh Colony, Faisalabad. Distributor and product enquiries welcome.",
       },
-      { property: "og:title", content: "Contact Shazib Outlet" },
+      { property: "og:title", content: "Contact B·G Pharma Pakistan" },
       {
         property: "og:description",
-        content: "Call 0314 484 9045, email shazibbhai338@gmail.com or visit our store in Gujrat, Punjab.",
+        content: "Phone, email and head office address for product, order and territory enquiries.",
       },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:url", content: "/contact" },
     ],
+    links: [{ rel: "canonical", href: "/contact" }],
   }),
   component: ContactPage,
 });
 
-const details = [
-  {
-    icon: MapPin,
-    title: "Our Store",
-    text: "Chhani Nikowani, District Gujrat, Punjab, Pakistan.",
-  },
-  { icon: Phone, title: "Call Us", text: "0314 484 9045 — for orders, stock and delivery updates." },
-  { icon: Clock, title: "Open Hours", text: "Monday to Sunday, 10:00 AM to 10:00 PM." },
-  {
-    icon: MessageCircle,
-    title: "WhatsApp Order",
-    text: "Send us the product name and your address — cash on delivery across Pakistan.",
-  },
-];
-
 function ContactPage() {
+  const [sent, setSent] = useState(false);
+  const manager = team[0];
+
+  const mailto = (formData: FormData) => {
+    const name = String(formData.get("name") ?? "");
+    const subject = `Enquiry from ${name} — ${String(formData.get("topic") ?? "General")}`;
+    const body = [
+      `Name: ${name}`,
+      `Phone: ${String(formData.get("phone") ?? "")}`,
+      `City: ${String(formData.get("city") ?? "")}`,
+      `Topic: ${String(formData.get("topic") ?? "")}`,
+      "",
+      String(formData.get("message") ?? ""),
+    ].join("\n");
+    return `mailto:${company.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  };
+
   return (
-    <main className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-      <Reveal className="text-center">
-        <p className="text-[10px] tracking-[0.45em] text-accent">GET IN TOUCH</p>
-        <h1 className="mt-4 text-4xl sm:text-6xl">Contact Shazib Outlet</h1>
-        <p className="mx-auto mt-5 max-w-xl text-sm leading-relaxed text-muted-foreground">
-          Questions about a watch, wallet or power bank? Call, message or visit the store —
-          we reply quickly and deliver nationwide.
-        </p>
-      </Reveal>
-
-      <div className="mt-12 grid gap-5 sm:grid-cols-2">
-        {details.map(({ icon: Icon, title, text }, i) => (
-          <Reveal key={title} delay={i * 100}>
-            <div className="card-3d glass-panel h-full rounded-2xl p-6">
-              <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/15 ring-1 ring-primary/30">
-                <Icon className="h-6 w-6 text-primary" />
-              </span>
-              <h2 className="mt-4 text-lg sm:text-xl">{title}</h2>
-              <p className="mt-2 text-sm text-muted-foreground">{text}</p>
-            </div>
+    <>
+      <section className="relative overflow-hidden bg-paper/60 backdrop-blur-xl">
+        <div className="hairline-grid pointer-events-none absolute inset-0" aria-hidden />
+        <div className="relative container-page py-16 md:py-20">
+          <Reveal>
+            <p className="eyebrow">Contact</p>
+            <h1 className="mt-4 max-w-3xl font-display text-4xl leading-tight text-primary-deep md:text-5xl">
+              Talk to our team in Faisalabad
+            </h1>
+            <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground">
+              For product literature, orders, distribution rights or territory enquiries, reach us by
+              phone, WhatsApp or email — we respond during business hours.
+            </p>
           </Reveal>
-        ))}
-      </div>
-
-      <Reveal className="lift-3d glass-panel mt-12 rounded-3xl px-6 py-14 text-center">
-        <h2 className="text-2xl sm:text-4xl">Ready To Order?</h2>
-        <p className="mx-auto mt-3 max-w-lg text-sm text-muted-foreground">
-          Cash on delivery available all over Pakistan, with 7-day easy returns.
-        </p>
-        <div className="mt-8 flex flex-wrap justify-center gap-3">
-          <Button size="lg" asChild>
-            <a href="https://wa.me/923144849045" target="_blank" rel="noreferrer">
-              Chat on WhatsApp
-            </a>
-          </Button>
-          <Button size="lg" variant="secondary" asChild>
-            <a href="tel:+923144849045">Call 0314 484 9045</a>
-          </Button>
-          <Button size="lg" variant="outline" asChild>
-            <a href="mailto:shazibbhai338@gmail.com">Email Us</a>
-          </Button>
         </div>
-      </Reveal>
-    </main>
+      </section>
+
+      <section className="container-page py-16 md:py-20">
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-14">
+          <div className="space-y-5 lg:col-span-5">
+            <Reveal>
+              <div className="rounded-2xl border border-border bg-card p-7 shadow-soft">
+                <h2 className="font-display text-xl text-primary-deep">Head office</h2>
+                <ul className="mt-6 space-y-5 text-sm">
+                  <li className="flex gap-3">
+                    <MapPin className="mt-0.5 size-4.5 shrink-0 text-primary" aria-hidden />
+                    <address className="not-italic text-muted-foreground">
+                      {company.addressLines.map((l) => (
+                        <span key={l} className="block">
+                          {l}
+                        </span>
+                      ))}
+                    </address>
+                  </li>
+                  <li className="flex gap-3">
+                    <Phone className="mt-0.5 size-4.5 shrink-0 text-primary" aria-hidden />
+                    <a
+                      href={`tel:${company.phoneRaw}`}
+                      className="font-semibold text-primary-deep hover:text-primary"
+                    >
+                      {company.phone}
+                    </a>
+                  </li>
+                  <li className="flex gap-3">
+                    <Mail className="mt-0.5 size-4.5 shrink-0 text-primary" aria-hidden />
+                    <a
+                      href={`mailto:${company.email}`}
+                      className="font-semibold break-all text-primary-deep hover:text-primary"
+                    >
+                      {company.email}
+                    </a>
+                  </li>
+                  <li className="flex gap-3">
+                    <Clock className="mt-0.5 size-4.5 shrink-0 text-primary" aria-hidden />
+                    <span className="text-muted-foreground">
+                      Monday – Saturday, 9:00 am – 6:00 pm (PKT)
+                    </span>
+                  </li>
+                  <li className="flex gap-3">
+                    <Building2 className="mt-0.5 size-4.5 shrink-0 text-primary" aria-hidden />
+                    <span className="text-muted-foreground">
+                      Field coverage: {company.coverage}
+                    </span>
+                  </li>
+                </ul>
+                <a
+                  href={`https://wa.me/${company.whatsapp}`}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="mt-7 inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-deep"
+                >
+                  Message us on WhatsApp
+                </a>
+              </div>
+            </Reveal>
+
+            {manager && (
+              <Reveal delay={110}>
+                <div className="flex items-center gap-4 rounded-2xl border border-border bg-secondary p-6">
+                  <img
+                    src={manager.image}
+                    alt={`${manager.name}, ${manager.role}`}
+                    loading="lazy"
+                    className="size-20 shrink-0 rounded-xl object-cover"
+                  />
+                  <div>
+                    <p className="text-[0.62rem] font-bold tracking-[0.18em] text-primary uppercase">
+                      {manager.role} · {manager.region}
+                    </p>
+                    <p className="mt-1.5 font-display text-lg text-primary-deep">{manager.name}</p>
+                    <a
+                      href={`tel:${manager.phoneRaw}`}
+                      className="mt-1 inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-primary-deep"
+                    >
+                      <UserRound className="size-4" aria-hidden /> {manager.phone}
+                    </a>
+                  </div>
+                </div>
+              </Reveal>
+            )}
+          </div>
+
+          <Reveal delay={140} className="lg:col-span-7">
+            <form
+              className="rounded-2xl border border-border bg-card p-7 shadow-soft md:p-9"
+              onSubmit={(e) => {
+                e.preventDefault();
+                const data = new FormData(e.currentTarget);
+                window.location.href = mailto(data);
+                setSent(true);
+              }}
+            >
+              <h2 className="font-display text-2xl text-primary-deep">Send an enquiry</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Fill this in and your email app will open with the details ready to send.
+              </p>
+
+              <div className="mt-7 grid gap-5 sm:grid-cols-2">
+                <Field label="Your name" name="name" required placeholder="Dr. / Mr. / Ms." />
+                <Field label="Phone" name="phone" type="tel" required placeholder="03XX XXXXXXX" />
+                <Field label="City" name="city" placeholder="Faisalabad" />
+                <label className="flex flex-col gap-2">
+                  <span className="text-xs font-bold tracking-[0.14em] text-primary uppercase">
+                    Enquiry type
+                  </span>
+                  <select
+                    name="topic"
+                    className="rounded-xl border border-border bg-background px-4 py-3 text-sm text-foreground outline-none transition-colors focus:border-primary"
+                  >
+                    <option>Product information</option>
+                    <option>Distribution / order</option>
+                    <option>Territory & field opportunity</option>
+                    <option>Other</option>
+                  </select>
+                </label>
+              </div>
+
+              <label className="mt-5 flex flex-col gap-2">
+                <span className="text-xs font-bold tracking-[0.14em] text-primary uppercase">
+                  Message
+                </span>
+                <textarea
+                  name="message"
+                  rows={5}
+                  required
+                  placeholder="Tell us which product or territory you are asking about."
+                  className="rounded-xl border border-border bg-background px-4 py-3 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary"
+                />
+              </label>
+
+              <button
+                type="submit"
+                className="mt-7 inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-soft transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary-deep"
+              >
+                <Send className="size-4" aria-hidden /> Send enquiry
+              </button>
+              <p aria-live="polite" className="mt-4 min-h-5 text-sm text-primary">
+                {sent
+                  ? "Your email app should now be open. If it didn't open, write to us directly at " +
+                    company.email
+                  : ""}
+              </p>
+            </form>
+          </Reveal>
+        </div>
+      </section>
+    </>
+  );
+}
+
+function Field({
+  label,
+  name,
+  type = "text",
+  required,
+  placeholder,
+}: {
+  label: string;
+  name: string;
+  type?: string;
+  required?: boolean;
+  placeholder?: string;
+}) {
+  return (
+    <label className="flex flex-col gap-2">
+      <span className="text-xs font-bold tracking-[0.14em] text-primary uppercase">{label}</span>
+      <input
+        name={name}
+        type={type}
+        required={required}
+        placeholder={placeholder}
+        className="rounded-xl border border-border bg-background px-4 py-3 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary"
+      />
+    </label>
   );
 }
